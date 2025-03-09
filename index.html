@@ -1,0 +1,3098 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DBN Online Baking Class</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/framer-motion"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reactbits-animations@latest/dist/reactbits.min.js"></script>
+    <style>
+        :root {
+    --red: #D80032;
+    --gold: #D4AF37;
+    --white: #FFFFFF;
+    --black: #1A1A1A;
+    --light-gold: #F2E8C6;
+    --dark-red: #A10022;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--white);
+    color: var(--black);
+    overflow-x: hidden;
+}
+
+/* Header and Navigation */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background-color: var(--white);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 60px;
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
+nav {
+    display: flex;
+    align-items: center;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+}
+
+.nav-links li {
+    margin: 0 15px;
+}
+
+.nav-links a {
+    color: var(--black);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 10px 5px;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: var(--red);
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--gold);
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+.hamburger {
+    display: none;
+    cursor: pointer;
+}
+
+.hamburger .line {
+    width: 25px;
+    height: 3px;
+    background-color: var(--black);
+    margin: 5px;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+/* Hero Section */
+.hero {
+    display: flex;
+    height: 100vh;
+    padding-top: 100px;
+    background: linear-gradient(to right, var(--white) 60%, var(--light-gold) 40%);
+}
+
+.hero-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 100px;
+}
+
+.hero-content h1 {
+    font-size: 48px;
+    color: var(--black);
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.hero-content p {
+    font-size: 18px;
+    color: var(--black);
+    margin-bottom: 40px;
+    line-height: 1.5;
+}
+
+.cta-button {
+    background-color: var(--red);
+    color: var(--white);
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    align-self: flex-start;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-button:hover {
+    background-color: var(--dark-red);
+    box-shadow: 0 5px 15px rgba(216, 0, 50, 0.3);
+}
+
+.cta-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: 0.5s;
+}
+
+.cta-button:hover::before {
+    left: 100%;
+}
+
+.hero-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-image img {
+    width: 80%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: transform 0.5s ease;
+}
+
+.hero-image img:hover {
+    transform: scale(1.03);
+}
+
+/* Section Styling */
+section {
+    padding: 100px 50px;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-header h2 {
+    font-size: 36px;
+    color: var(--black);
+    margin-bottom: 15px;
+    position: relative;
+    display: inline-block;
+}
+
+.divider {
+    width: 80px;
+    height: 3px;
+    background: var(--gold);
+    margin: 0 auto;
+}
+
+/* About Chef Section */
+.about-chef {
+    background-color: var(--white);
+}
+
+.chef-container {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+
+.chef-image {
+    flex: 1;
+}
+
+.chef-image img {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.5s ease;
+}
+
+.chef-image img:hover {
+    transform: translateY(-10px);
+}
+
+.chef-bio {
+    flex: 1;
+}
+
+.chef-bio h3 {
+    font-size: 30px;
+    color: var(--black);
+    margin-bottom: 10px;
+}
+
+.chef-title {
+    color: var(--red);
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.chef-bio p {
+    margin-bottom: 20px;
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+.chef-socials {
+    display: flex;
+    gap: 15px;
+}
+
+.chef-socials a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--gold);
+    color: var(--white);
+    transition: all 0.3s ease;
+}
+
+.chef-socials a:hover {
+    background-color: var(--red);
+    transform: translateY(-3px);
+}
+
+/* About DBN Section */
+.about-dbn {
+    background-color: var(--light-gold);
+    position: relative;
+    overflow: hidden;
+}
+
+.dbn-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.dbn-content p {
+    text-align: center;
+    margin-bottom: 50px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+    font-size: 18px;
+}
+
+.dbn-features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+.feature {
+    background-color: var(--white);
+    padding: 30px;
+    border-radius: 10px;
+    width: 250px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.feature:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.feature i {
+    font-size: 40px;
+    color: var(--gold);
+    margin-bottom: 20px;
+}
+
+.feature h4 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: var(--black);
+}
+
+.feature p {
+    font-size: 15px;
+    color: var(--black);
+    line-height: 1.5;
+}
+
+/* Classes Section */
+.classes {
+    background-color: var(--white);
+}
+
+.classes-filter {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    background-color: transparent;
+    border: 2px solid var(--gold);
+    color: var(--black);
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-btn.active, .filter-btn:hover {
+    background-color: var(--gold);
+    color: var(--white);
+}
+
+.classes-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+.class-card {
+    background-color: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.class-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.class-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.class-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.class-card:hover .class-image img {
+    transform: scale(1.1);
+}
+
+.class-level {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.beginner {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.intermediate {
+    background-color: #FFC107;
+    color: black;
+}
+
+.advanced {
+    background-color: var(--red);
+    color: white;
+}
+
+.class-details {
+    padding: 20px;
+}
+
+.class-details h3 {
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.class-details p {
+    color: #666;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.class-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.class-meta span {
+    display: flex;
+    align-items: center;
+    color: #666;
+}
+
+.class-meta i {
+    margin-right: 5px;
+    color: var(--gold);
+}
+
+/* Detail Button and Material Content */
+.detail-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background-color: transparent;
+    border: 1px solid var(--gold);
+    color: var(--black);
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.detail-btn:hover {
+    background-color: var(--light-gold);
+}
+
+.detail-btn i {
+    transition: transform 0.3s ease;
+}
+
+.detail-btn.active i {
+    transform: rotate(180deg);
+}
+
+.class-material {
+    background-color: var(--light-gold);
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    display: none;
+}
+
+.class-material.show {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.class-material h4 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: var(--black);
+}
+
+.class-material ul {
+    list-style: none;
+}
+
+.class-material ul li {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.class-material ul li i {
+    color: var(--gold);
+    margin-right: 8px;
+    margin-top: 3px;
+    min-width: 16px;
+}
+
+.class-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.price {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--red);
+}
+
+.buy-button, .add-to-cart-button {
+    background-color: var(--red);
+    color: var(--white);
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.buy-button:hover, .add-to-cart-button:hover {
+    background-color: var(--dark-red);
+}
+
+.buy-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+/* Events Section */
+.events {
+    background-color: var(--light-gold);
+    position: relative;
+    overflow: hidden;
+}
+
+.events-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.event-card {
+    background-color: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    width: calc(50% - 15px);
+    display: flex;
+    flex-direction: column;
+}
+
+.event-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.event-image {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+}
+
+.event-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.event-card:hover .event-image img {
+    transform: scale(1.1);
+}
+
+.event-date {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: var(--red);
+    color: var(--white);
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    min-width: 60px;
+}
+
+.event-date .day {
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.event-date .month {
+    display: block;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.event-details {
+    padding: 25px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.event-details h3 {
+    margin-bottom: 15px;
+    font-size: 22px;
+    color: var(--black);
+}
+
+.event-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    color: #666;
+    font-size: 14px;
+}
+
+.event-info i {
+    color: var(--gold);
+    margin-right: 8px;
+    min-width: 16px;
+}
+
+.event-description {
+    margin: 15px 0;
+    line-height: 1.6;
+    flex-grow: 1;
+}
+
+.register-button {
+    background-color: var(--red);
+    color: var(--white);
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    align-self: flex-start;
+    margin-top: auto;
+}
+
+.register-button:hover {
+    background-color: var(--dark-red);
+}
+
+/* Testimonials Section */
+.testimonials {
+    background-color: var(--white);
+    position: relative;
+    overflow: hidden;
+}
+
+.testimonials-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.testimonials-content p {
+    text-align: center;
+    margin-bottom: 50px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+    font-size: 18px;
+}
+
+.testimonials-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+.testimonial-card {
+    background-color: var(--light-gold);
+    padding: 30px;
+    border-radius: 10px;
+    width: 250px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 15px;
+    border: 3px solid var(--gold);
+}
+
+.testimonial-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.testimonial-card h4 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: var(--black);
+}
+
+.testimonial-rating {
+    margin-bottom: 15px;
+}
+
+.testimonial-rating i {
+    color: var(--gold);
+    margin: 0 2px;
+}
+
+.testimonial-card p {
+    font-size: 14px;
+    color: var(--black);
+    line-height: 1.5;
+    font-style: italic;
+}
+
+@media (max-width: 1200px) {
+    .testimonial-card {
+        width: calc(33.33% - 20px);
+        min-width: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .testimonial-card {
+        width: calc(50% - 15px);
+        min-width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .testimonial-card {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+/* Contact Section */
+.contact {
+    background-color: var(--white);
+}
+
+.contact-container {
+    display: flex;
+    gap: 50px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.contact-info, .contact-form {
+    flex: 1;
+}
+
+.contact-info h3, .contact-form h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: var(--black);
+}
+
+.contact-info p {
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.info-item i {
+    width: 40px;
+    height: 40px;
+    background-color: var(--gold);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 15px;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.social-links a {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--gold);
+    color: var(--white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+    background-color: var(--red);
+    transform: translateY(-3px);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus, .form-group textarea:focus {
+    border-color: var(--gold);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+}
+
+.form-group textarea {
+    height: 150px;
+    resize: vertical;
+}
+
+.submit-btn {
+    background-color: var(--red);
+    color: var(--white);
+    border: none;
+    padding: 15px 30px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.submit-btn:hover {
+    background-color: var(--dark-red);
+}
+
+/* Footer */
+footer {
+    background-color: var(--black);
+    color: var(--white);
+    padding: 60px 50px 20px;
+}
+
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-logo img {
+    height: 60px;
+    margin-bottom: 15px;
+}
+
+.footer-logo p {
+    color: var(--gold);
+    font-size: 14px;
+}
+
+.footer-links h4, .footer-newsletter h4 {
+    color: var(--white);
+    margin-bottom: 20px;
+    font-size: 18px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.footer-links h4::after, .footer-newsletter h4::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 2px;
+    background-color: var(--gold);
+}
+
+.footer-links ul {
+    list-style: none;
+}
+
+.footer-links ul li {
+    margin-bottom: 10px;
+}
+
+.footer-links ul li a {
+    color: #ccc;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links ul li a:hover {
+    color: var(--gold);
+}
+
+.footer-newsletter p {
+    margin-bottom: 20px;
+    color: #ccc;
+}
+
+.newsletter-form {
+    display: flex;
+}
+
+.newsletter-form input {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 5px 0 0 5px;
+    font-size: 14px;
+}
+
+.newsletter-form button {
+    background-color: var(--gold);
+    color: var(--black);
+    border: none;
+    padding: 0 20px;
+    border-radius: 0 5px 5px 0;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.newsletter-form button:hover {
+    background-color: var(--red);
+    color: var(--white);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #333;
+}
+
+.footer-bottom p {
+    font-size: 14px;
+    color: #999;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .chef-container {
+        flex-direction: column;
+    }
+    
+    .hero {
+        flex-direction: column;
+        height: auto;
+        background: var(--white);
+    }
+    
+    .hero-content {
+        padding: 50px;
+    }
+    
+    .hero-image {
+        padding: 50px;
+    }
+    
+    .contact-container {
+        flex-direction: column;
+    }
+    
+    .classes-container {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+    
+    .events-container {
+        flex-direction: column;
+    }
+    
+    .event-card {
+        width: 100%;
+    }
+}
+
+@media (max-width: 992px) {
+    section {
+        padding: 80px 30px;
+    }
+    
+    .hero-content h1 {
+        font-size: 36px;
+    }
+    
+    .hero-content p {
+        font-size: 16px;
+    }
+    
+    .classes-container {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+    
+    .event-image {
+        height: 220px;
+    }
+}
+
+@media (max-width: 768px) {
+    header {
+        padding: 15px 20px;
+    }
+    
+    .logo {
+        height: 50px;
+    }
+    
+    .nav-links {
+        position: fixed;
+        background-color: var(--white);
+        height: 100vh;
+        width: 100%;
+        top: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        clip-path: circle(100px at 90% -20%);
+        -webkit-clip-path: circle(100px at 90% -20%);
+        transition: all 1s ease-out;
+        pointer-events: none;
+        z-index: 100;
+    }
+    
+    .nav-links.open {
+        clip-path: circle(1000px at 90% -20%);
+        -webkit-clip-path: circle(1000px at 90% -20%);
+        pointer-events: all;
+    }
+    
+    .nav-links li {
+        margin: 20px 0;
+    }
+    
+    .hamburger {
+        display: block;
+        z-index: 101;
+    }
+    
+    .hamburger.active .line:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 6px);
+    }
+    
+    .hamburger.active .line:nth-child(2) {
+        opacity: 0;
+    }
+    
+    .hamburger.active .line:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -6px);
+    }
+    
+    .hero-content {
+        padding: 30px 20px;
+    }
+    
+    .hero-image {
+        padding: 30px 20px;
+    }
+    
+    section {
+        padding: 60px 20px;
+    }
+    
+    .section-header h2 {
+        font-size: 30px;
+    }
+    
+    .classes-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .feature {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .event-image {
+        height: 180px;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .footer-logo, .footer-links, .footer-newsletter {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-content h1 {
+        font-size: 28px;
+    }
+    
+    .cta-button {
+        padding: 12px 20px;
+        font-size: 16px;
+    }
+    
+    .section-header h2 {
+        font-size: 26px;
+    }
+    
+    .chef-bio h3 {
+        font-size: 24px;
+    }
+    
+    .class-meta {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .class-price {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .buy-button {
+        width: 100%;
+    }
+    
+    .event-date {
+        padding: 8px;
+        min-width: 50px;
+    }
+    
+    .event-date .day {
+        font-size: 18px;
+    }
+    
+    .event-date .month {
+        font-size: 12px;
+    }
+    
+    .newsletter-form {
+        flex-direction: column;
+    }
+    
+    .newsletter-form input {
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+    
+    .newsletter-form button {
+        border-radius: 5px;
+        padding: 10px;
+    }
+}
+
+/* Animation Classes */
+[data-animate] {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+[data-animate="fadeIn"] {
+    transform: translateY(0);
+}
+
+[data-animate="slideDown"] {
+    transform: translateY(-30px);
+}
+
+[data-animate="slideUp"] {
+    transform: translateY(30px);
+}
+
+[data-animate="slideLeft"] {
+    transform: translateX(30px);
+}
+
+[data-animate="slideRight"] {
+    transform: translateX(-30px);
+}
+
+[data-animate="zoomIn"] {
+    transform: scale(0.8);
+}
+
+[data-animate="flipIn"] {
+    transform: perspective(400px) rotateY(90deg);
+}
+
+[data-animate="pulse"] {
+    transform: none;
+}
+
+.animated {
+    opacity: 1;
+    transform: none;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.pulse-animation {
+    animation: pulse 1.5s infinite;
+}
+
+/* Cart Icon Styles */
+.cart-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+.cart-icon i {
+    font-size: 24px;
+    color: var(--black);
+    transition: color 0.3s ease;
+}
+
+.cart-icon:hover i {
+    color: var(--red);
+}
+
+.cart-count {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: var(--red);
+    color: var(--white);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* Cart Overlay Styles */
+.cart-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1001;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.cart-container {
+    background-color: var(--white);
+    border-radius: 10px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 30px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--light-gold);
+}
+
+.cart-header h3 {
+    font-size: 24px;
+    color: var(--black);
+}
+
+.close-cart {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--black);
+    transition: color 0.3s ease;
+}
+
+.close-cart:hover {
+    color: var(--red);
+}
+
+.cart-items {
+    margin-bottom: 30px;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.cart-item-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-right: 15px;
+}
+
+.cart-item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cart-item-details {
+    flex: 1;
+}
+
+.cart-item-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.cart-item-price {
+    color: var(--red);
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.cart-item-quantity {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-btn {
+    background-color: var(--light-gold);
+    border: none;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.quantity-btn:hover {
+    background-color: var(--gold);
+}
+
+.cart-item-quantity span {
+    margin: 0 10px;
+    min-width: 20px;
+    text-align: center;
+}
+
+.cart-item-remove {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    margin-left: 15px;
+    transition: color 0.3s ease;
+}
+
+.cart-item-remove:hover {
+    color: var(--red);
+}
+
+.cart-summary {
+    margin-bottom: 30px;
+    padding: 15px;
+    background-color: var(--light-gold);
+    border-radius: 5px;
+}
+
+.cart-summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.cart-summary-total {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--red);
+}
+
+.customer-details {
+    margin-bottom: 30px;
+}
+
+.customer-details h4 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: var(--black);
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.form-row .form-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.checkout-btn {
+    background-color: var(--red);
+    color: var(--white);
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.checkout-btn:hover {
+    background-color: var(--dark-red);
+}
+
+.checkout-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.empty-cart-message {
+    text-align: center;
+    padding: 30px;
+    color: #666;
+    font-size: 18px;
+}
+
+.error-message {
+    color: var(--red);
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
+}
+
+.form-group.error input {
+    border-color: var(--red);
+}
+
+.form-group.error .error-message {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .cart-container {
+        padding: 20px;
+    }
+    
+    .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .cart-item-image {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    
+    .form-row {
+        flex-direction: column;
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- Header & Navbar -->
+    <header>
+        <div class="logo-container" data-animate="fadeIn">
+            <img src="./assets/logodbnmain.png" alt="DBN Logo" class="logo">
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li data-animate="slideDown" data-delay="0.1"><a href="#home">Home</a></li>
+                <li data-animate="slideDown" data-delay="0.2"><a href="#about-chef">About Chef Nina</a></li>
+                <li data-animate="slideDown" data-delay="0.3"><a href="#about-dbn">About DBN</a></li>
+                <li data-animate="slideDown" data-delay="0.4"><a href="#classes">Kelas Baking Online</a></li>
+                <li data-animate="slideDown" data-delay="0.5"><a href="#events">Acara Terbaru</a></li>
+                <li data-animate="slideDown" data-delay="0.6"><a href="#contact">Contact Us</a></li>
+            </ul>
+            <div class="cart-icon" id="cartIcon" data-animate="slideDown" data-delay="0.7">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">0</span>
+            </div>
+            <div class="hamburger">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Cart Overlay -->
+    <div class="cart-overlay" id="cartOverlay">
+        <div class="cart-container">
+            <div class="cart-header">
+                <h3>Keranjang Belanja</h3>
+                <button class="close-cart" id="closeCart"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="cart-items" id="cartItems">
+                <!-- Cart items will be inserted here dynamically -->
+            </div>
+            <div class="cart-summary" id="cartSummary">
+                <div class="cart-summary-row">
+                    <span>Subtotal:</span>
+                    <span id="cartSubtotal">Rp 0</span>
+                </div>
+                <div class="cart-summary-row cart-summary-total">
+                    <span>Total:</span>
+                    <span id="cartTotal">Rp 0</span>
+                </div>
+            </div>
+            <div class="customer-details" id="customerDetails">
+                <h4>Informasi Pelanggan</h4>
+                <form id="checkoutForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="text" id="customerName" placeholder="Nama Lengkap" required>
+                            <div class="error-message">Nama lengkap wajib diisi</div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="tel" id="customerPhone" placeholder="Nomor Telepon" required>
+                            <div class="error-message">Nomor telepon wajib diisi</div>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="customerEmail" placeholder="Email" required>
+                            <div class="error-message">Email wajib diisi dengan format yang benar</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <button class="checkout-btn" id="checkoutBtn" disabled>Checkout via WhatsApp</button>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content" data-animate="zoomIn">
+            <h1>Kembangkan Bakat Baking Anda Bersama Chef Nina</h1>
+            <p>Kelas online premium dengan chef profesional yang akan membimbing Anda langkah demi langkah</p>
+            <a href="#about-chef"><button class="cta-button" data-animate="pulse">Mulai Sekarang</button></a>
+        </div>
+        <div class="hero-image" data-animate="slideRight">
+            <img src="https://cdn.prod.website-files.com/5fe870209b4f367ca43b8b48/63d27201db29fec9c295a73b_Thumbnail(5).jpg" alt="Baking Class">
+        </div>
+    </section>
+
+    <!-- About Chef Section -->
+    <section id="about-chef" class="about-chef">
+        <div class="section-header" data-animate="fadeIn">
+            <h2>About Chef Nina</h2>
+            <div class="divider"></div>
+        </div>
+        <div class="chef-container">
+            <div class="chef-image" data-animate="slideLeft">
+                <img src="./assets/profile2.png" alt="Chef Nina">  <!-- Gunakan gambar 480px x 480px -->
+            </div>
+            <div class="chef-bio" data-animate="slideRight">
+                <h3>Erlina Jaya</h3>
+                <p class="chef-title">Master Pastry Chef & Founder DBN</p>
+                <p>Chef Nina telah berpengalaman lebih dari 15 tahun di dunia pastry dan bakery. Lulusan Le Cordon Bleu Paris, Chef Nina telah bekerja di berbagai hotel bintang 5 dan restaurant ternama di dunia sebelum mendirikan DBN Online Baking Class untuk berbagi pengetahuan dan passion dalam dunia baking.</p>
+                <p>Dengan pendekatan yang teliti dan kreatif, Chef Nina akan membantu Anda menguasai teknik-teknik baking dari dasar hingga advanced dengan cara yang menyenangkan dan mudah diikuti.</p>
+                <div class="chef-socials" data-animate="fadeIn" data-delay="0.5">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About DBN Section -->
+    <section id="about-dbn" class="about-dbn">
+        <div class="section-header" data-animate="fadeIn">
+            <h2>About DBN</h2>
+            <div class="divider"></div>
+        </div>
+        <div class="dbn-container">
+            <div class="dbn-content" data-animate="fadeIn" data-delay="0.2">
+                <p>DBN (Delicious Baking Nowadays) adalah platform kelas baking online premium yang didirikan oleh Chef Nina Hartono. Kami berkomitmen untuk memberikan pengalaman belajar baking terbaik melalui kelas online yang interaktif dan komprehensif.</p>
+                <div class="dbn-features">
+                    <div class="feature" data-animate="zoomIn" data-delay="0.3">
+                        <i class="fas fa-video"></i>
+                        <h4>Video HD</h4>
+                        <p>Tutorial berkualitas tinggi dengan penjelasan detail</p>
+                    </div>
+                    <div class="feature" data-animate="zoomIn" data-delay="0.4">
+                        <i class="fas fa-comments"></i>
+                        <h4>Support 24/7</h4>
+                        <p>Tanya jawab langsung dengan Chef Nina dan tim</p>
+                    </div>
+                    <div class="feature" data-animate="zoomIn" data-delay="0.5">
+                        <i class="fas fa-file-alt"></i>
+                        <h4>E-book Resep</h4>
+                        <p>Akses e-book resep eksklusif dari Chef Nina</p>
+                    </div>
+                    <div class="feature" data-animate="zoomIn" data-delay="0.6">
+                        <i class="fas fa-certificate"></i>
+                        <h4>Sertifikat</h4>
+                        <p>Dapatkan sertifikat resmi setelah menyelesaikan kelas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Classes Section -->
+    <section id="classes" class="classes">
+        <div class="section-header" data-animate="fadeIn">
+            <h2>Kelas Baking Online</h2>
+            <div class="divider"></div>
+        </div>
+        <div class="classes-filter" data-animate="slideDown">
+            <button class="filter-btn active" data-filter="all">Semua</button>
+            <button class="filter-btn" data-filter="bread">Bread</button>
+            <button class="filter-btn" data-filter="cake">Cake</button>
+            <button class="filter-btn" data-filter="pastry">Pastry</button>
+            <button class="filter-btn" data-filter="cookies">Cookies</button>
+        </div>
+        <div class="classes-container">
+            <!-- Class 1 -->
+            <div class="class-card" data-category="bread" data-animate="flipIn" data-delay="0.1">
+                <div class="class-image">
+                    <img src="./assets/kelas.png" alt="Basic Bread Making">
+                    <div class="class-level beginner">Beginner</div>
+                </div>
+                <div class="class-details">
+                    <h3>Basic Bread Making</h3>
+                    <p>Pelajari dasar-dasar membuat roti dari adonan hingga pembakaran</p>
+                    <div class="class-meta">
+                        <span><i class="far fa-clock"></i> 8 jam</span>
+                        <span><i class="far fa-calendar"></i> 4 minggu</span>
+                        <span><i class="far fa-file-video"></i> 24 video</span>
+                    </div>
+                    <button class="detail-btn">Lihat Detail Materi <i class="fas fa-chevron-down"></i></button>
+                    <div class="class-material">
+                        <h4>Materi yang Dipelajari:</h4>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Pengenalan bahan-bahan dasar roti</li>
+                            <li><i class="fas fa-check"></i> Teknik pengadonan dan fermentasi</li>
+                            <li><i class="fas fa-check"></i> Shaping techniques untuk berbagai jenis roti</li>
+                            <li><i class="fas fa-check"></i> Teknik scoring dan pembakaran</li>
+                            <li><i class="fas fa-check"></i> Resep dasar: French Baguette</li>
+                            <li><i class="fas fa-check"></i> Resep dasar: Dinner Rolls</li>
+                            <li><i class="fas fa-check"></i> Resep dasar: Sandwich Bread</li>
+                            <li><i class="fas fa-check"></i> Troubleshooting masalah umum dalam bread making</li>
+                        </ul>
+                    </div>
+                    <div class="class-price">
+                        <span class="price">Rp 850.000</span>
+                        <div class="buy-buttons">
+                            <button class="buy-button" data-animate="pulse">Beli Sekarang</button>
+                            <button class="add-to-cart-button" 
+                                data-id="class1" 
+                                data-name="Basic Bread Making" 
+                                data-price="850000" 
+                                data-image="./assets/kelas.png">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Class 2 -->
+            <div class="class-card" data-category="cake" data-animate="flipIn" data-delay="0.2">
+                <div class="class-image">
+                    <img src="./assets/kelas.png" alt="Cake Decoration Masterclass">
+                    <div class="class-level advanced">Advanced</div>
+                </div>
+                <div class="class-details">
+                    <h3>Cake Decoration Masterclass</h3>
+                    <p>Tingkatkan skill dekorasi kue Anda dengan teknik profesional</p>
+                    <div class="class-meta">
+                        <span><i class="far fa-clock"></i> 12 jam</span>
+                        <span><i class="far fa-calendar"></i> 6 minggu</span>
+                        <span><i class="far fa-file-video"></i> 36 video</span>
+                    </div>
+                    <button class="detail-btn">Lihat Detail Materi <i class="fas fa-chevron-down"></i></button>
+                    <div class="class-material">
+                        <h4>Materi yang Dipelajari:</h4>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Dasar-dasar buttercream frosting</li>
+                            <li><i class="fas fa-check"></i> Teknik crumb coating yang sempurna</li>
+                            <li><i class="fas fa-check"></i> Piping techniques: roses, leaves, borders</li>
+                            <li><i class="fas fa-check"></i> Fondant work dan sugar craft</li>
+                            <li><i class="fas fa-check"></i> Chocolate garnish dan modeling</li>
+                            <li><i class="fas fa-check"></i> Isomalt dan sugar art</li>
+                            <li><i class="fas fa-check"></i> Modern cake design: drip cakes, fault line cakes</li>
+                            <li><i class="fas fa-check"></i> Watercolor effect dan marble technique</li>
+                            <li><i class="fas fa-check"></i> Airbrushing techniques untuk kue</li>
+                            <li><i class="fas fa-check"></i> Project akhir: Wedding cake 2 tier</li>
+                        </ul>
+                    </div>
+                    <div class="class-price">
+                        <span class="price">Rp 1.250.000</span>
+                        <div class="buy-buttons">
+                            <button class="buy-button" data-animate="pulse">Beli Sekarang</button>
+                            <button class="add-to-cart-button" 
+                                data-id="class2" 
+                                data-name="Cake Decoration Masterclass" 
+                                data-price="1250000" 
+                                data-image="./assets/kelas.png">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Class 3 -->
+            <div class="class-card" data-category="pastry" data-animate="flipIn" data-delay="0.3">
+                <div class="class-image">
+                    <img src="./assets/kelas.png" alt="French Pastry Essentials">
+                    <div class="class-level intermediate">Intermediate</div>
+                </div>
+                <div class="class-details">
+                    <h3>French Pastry Essentials</h3>
+                    <p>Kuasai teknik dasar pastry Prancis yang terkenal</p>
+                    <div class="class-meta">
+                        <span><i class="far fa-clock"></i> 10 jam</span>
+                        <span><i class="far fa-calendar"></i> 5 minggu</span>
+                        <span><i class="far fa-file-video"></i> 28 video</span>
+                    </div>
+                    <button class="detail-btn">Lihat Detail Materi <i class="fas fa-chevron-down"></i></button>
+                    <div class="class-material">
+                        <h4>Materi yang Dipelajari:</h4>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Pâte Sucrée (Sweet Shortcrust Pastry)</li>
+                            <li><i class="fas fa-check"></i> Pâte Brisée (Shortcrust Pastry)</li>
+                            <li><i class="fas fa-check"></i> Pâte Sablée (Sandy Textured Pastry)</li>
+                            <li><i class="fas fa-check"></i> Pâte à Choux (Choux Pastry)</li>
+                            <li><i class="fas fa-check"></i> Pâte Feuilletée (Puff Pastry)</li>
+                            <li><i class="fas fa-check"></i> Crème Pâtissière dan variasinya</li>
+                            <li><i class="fas fa-check"></i> Tart Citron (Lemon Tart)</li>
+                            <li><i class="fas fa-check"></i> Paris-Brest</li>
+                            <li><i class="fas fa-check"></i> Mille-feuille</li>
+                        </ul>
+                    </div>
+                    <div class="class-price">
+                        <span class="price">Rp 950.000</span>
+                        <div class="buy-buttons">
+                            <button class="buy-button" data-animate="pulse">Beli Sekarang</button>
+                            <button class="add-to-cart-button" 
+                                data-id="class3" 
+                                data-name="French Pastry Essentials" 
+                                data-price="950000" 
+                                data-image="./assets/kelas.png">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Class 4 -->
+            <div class="class-card" data-category="cookies" data-animate="flipIn" data-delay="0.4">
+                <div class="class-image">
+                    <img src="./assets/kelas.png" alt="Artisan Cookies">
+                    <div class="class-level beginner">Beginner</div>
+                </div>
+                <div class="class-details">
+                    <h3>Artisan Cookies</h3>
+                    <p>Buat cookies gourmet dengan berbagai teknik dekorasi</p>
+                    <div class="class-meta">
+                        <span><i class="far fa-clock"></i> 6 jam</span>
+                        <span><i class="far fa-calendar"></i> 3 minggu</span>
+                        <span><i class="far fa-file-video"></i> 18 video</span>
+                    </div>
+                    <button class="detail-btn">Lihat Detail Materi <i class="fas fa-chevron-down"></i></button>
+                    <div class="class-material">
+                        <h4>Materi yang Dipelajari:</h4>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Dasar pembuatan cookie dough yang sempurna</li>
+                            <li><i class="fas fa-check"></i> Teknik membuat royal icing, konsistensi dan warna</li>
+                            <li><i class="fas fa-check"></i> Flooding techniques untuk royal icing</li>
+                            <li><i class="fas fa-check"></i> Wet-on-wet technique dan marbling</li>
+                            <li><i class="fas fa-check"></i> Brush embroidery technique</li>
+                            <li><i class="fas fa-check"></i> Classic Chocolate Chip Cookies</li>
+                            <li><i class="fas fa-check"></i> French Macarons</li>
+                            <li><i class="fas fa-check"></i> Decorated Sugar Cookies</li>
+                        </ul>
+                    </div>
+                    <div class="class-price">
+                        <span class="price">Rp 750.000</span>
+                        <div class="buy-buttons">
+                            <button class="buy-button" data-animate="pulse">Beli Sekarang</button>
+                            <button class="add-to-cart-button" 
+                                data-id="class4" 
+                                data-name="Artisan Cookies" 
+                                data-price="750000" 
+                                data-image="./assets/kelas.png">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Class 5 -->
+            <div class="class-card" data-category="cake" data-animate="flipIn" data-delay="0.5">
+                <div class="class-image">
+                    <img src="./assets/kelas.png" alt="Modern Cake Design">
+                    <div class="class-level advanced">Advanced</div>
+                </div>
+                <div class="class-details">
+                    <h3>Modern Cake Design</h3>
+                    <p>Pelajari teknik terbaru dalam desain kue kontemporer</p>
+                    <div class="class-meta">
+                        <span><i class="far fa-clock"></i> 14 jam</span>
+                        <span><i class="far fa-calendar"></i> 7 minggu</span>
+                        <span><i class="far fa-file-video"></i> 42 video</span>
+                    </div>
+                    <button class="detail-btn">Lihat Detail Materi <i class="fas fa-chevron-down"></i></button>
+                    <div class="class-material">
+                        <h4>Materi yang Dipelajari:</h4>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Cake structure dan konstruksi multilayer</li>
+                            <li><i class="fas fa-check"></i> Ganache recipes dan glazing techniques</li>
+                            <li><i class="fas fa-check"></i> Mirror glaze dan efek visual</li>
+                            <li><i class="fas fa-check"></i> Geometric cake design</li>
+                            <li><i class="fas fa-check"></i> Textured buttercream techniques</li>
+                            <li><i class="fas fa-check"></i> Bas relief pada kue</li>
+                            <li><i class="fas fa-check"></i> Isomalt sails dan sugar art kontemporer</li>
+                            <li><i class="fas fa-check"></i> Chocolate showpieces untuk garnish kue</li>
+                            <li><i class="fas fa-check"></i> Structural elements dan gravity-defying cakes</li>
+                            <li><i class="fas fa-check"></i> Final project: Designer showcase cake</li>
+                        </ul>
+                    </div>
+                    <div class="class-price">
+                        <span class="price">Rp 1.350.000</span>
+                        <div class="buy-buttons">
+                            <button class="buy-button" data-animate="pulse">Beli Sekarang</button>
+                            <button class="add-to-cart-button" 
+                                data-id="class5" 
+                                data-name="Modern Cake Design" 
+                                data-price="1350000" 
+                                data-image="./assets/kelas.png">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Classes 6-10 with similar modifications... -->
+            <!-- Class 6 -->
+            <div class="class-card" data-category="bread" data-animate="flipIn" data-delay="0.6">
+                <div class="class-image">
+                    <img src="./assets/kelas.png" alt="Sourdough Mastery">
+                    <div class="class-level intermediate">Intermediate</div>
+                </div>
+                <div class="class-details">
+                    <h3>Sourdough Mastery</h3>
+                    <p>Teknik membuat dan memelihara sourdough starter hingga roti</p>
+                    <div class="class-meta">
+                        <span><i class="far fa-clock"></i> 9 jam</span>
+                        <span><i class="far fa-calendar"></i> 5 minggu</span>
+                        <span><i class="far fa-file-video"></i> 26 video</span>
+                    </div>
+                    <button class="detail-btn">Lihat Detail Materi <i class="fas fa-chevron-down"></i></button>
+                    <div class="class-material">
+                        <h4>Materi yang Dipelajari:</h4>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Pembuatan sourdough starter dari awal</li>
+                            <li><i class="fas fa-check"></i> Cara memelihara dan menyimpan starter</li>
+                            <li><i class="fas fa-check"></i> Feeding schedule dan rutinitas</li>
+                            <li><i class="fas fa-check"></i> Autolyse dan hydration levels</li>
+                            <li><i class="fas fa-check"></i> Stretch and fold techniques</li>
+                            <li><i class="fas fa-check"></i> Bulk fermentation dan proofing</li>
+                            <li><i class="fas fa-check"></i> Coil fold dan lamination</li>
+                            <li><i class="fas fa-check"></i> Scoring advanced designs</li>
+                            <li><i class="fas fa-check"></i> Baking with dutch oven</li>
+                            <li><i class="fas fa-check"></i> Sourdough Pizza dan flatbreads</li>
+                        </ul>
+                    </div>
+                    <div class="class-price">
+                        <span class="price">Rp 900.000</span>
+                        <div class="buy-buttons">
+                            <button class="buy-button" data-animate="pulse">Beli Sekarang</button>
+                            <button class="add-to-cart-button" 
+                                data-id="class6" 
+                                data-name="Sourdough Mastery" 
+                                data-price="900000" 
+                                data-image="./assets/kelas.png">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Class 7 -->
+            <div class="class-card" data-category="pastry" data-animate="flipIn" data-delay="0.7">
+                <div class="class-image">
+                    <img src="./assets/kelas.png" alt="Asian Pastry Fusion">
+                    <div class="class-level intermediate">Intermediate</div>
+                </div>
+                <div class="class-details">
+                    <h3>Asian Pastry Fusion</h3>
+                    <p>Gabungkan teknik pastry klasik dengan rasa Asia</p>
+                    <div class="class-meta">
+                        <span><i class="far fa-clock"></i> 8 jam</span>
+                        <span><i class="far fa-calendar"></i> 4 minggu</span>
+                        <span><i class="far fa-file-video"></i> 24 video</span>
+                    </div>
+                    <button class="detail-btn">Lihat Detail Materi <i class="fas fa-chevron-down"></i></button>
+                    <div class="class-material">
+                        <h4>Materi yang Dipelajari:</h4>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Pengenalan bahan-bahan Asia untuk pastry</li>
+                            <li><i class="fas fa-check"></i> Matcha techniques dan aplikasi</li>
+                            <li><i class="fas fa-check"></i> Black Sesame Entremet</li>
+                            <li><i class="fas fa-check"></i> Pandan Chiffon Cake</li>
+                            <li><i class="fas fa-check"></i> Yuzu Tart</li>
+                            <li><i class="fas fa-check"></i> Japanese Milk Bread</li>
+                            <li><i class="fas fa-check"></i> Mochi Croissant Hybrid</li>
+                            <li><i class="fas fa-check"></i> Red Bean Cream Puffs</li>
+                            <li><i class="fas fa-check"></i> Coconut Panna Cotta dengan Mangga</li>
+                        </ul>
+                    </div>
+                    <div class="class-price">
+                        <span class="price">Rp 950.000</span>
+                        <div class="buy-buttons">
+                            <button class="buy-button" data-animate="pulse">Beli Sekarang</button>
+                            <button class="add-to-cart-button" 
+                                data-id="class7" 
+                                data-name="Asian Pastry Fusion" 
+                                data-price="950000" 
+                                data-image="./assets/kelas.png">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Class 8 -->
+            <div class="class-card" data-category="cookies" data-animate="flipIn" data-delay="0.8">
+                <div class="class-image">
+                    <img src="./assets/kelas.png" alt="Holiday Cookie Collection">
+                    <div class="class-level beginner">Beginner</div>
+                </div>
+                <div class="class-details">
+                    <h3>Holiday Cookie Collection</h3>
+                    <p>Buat koleksi cookie istimewa untuk berbagai kesempatan</p>
+                    <div class="class-meta">
+                        <span><i class="far fa-clock"></i> 7 jam</span>
+                        <span><i class="far fa-calendar"></i> 4 minggu</span>
+                        <span><i class="far fa-file-video"></i> 21 video</span>
+                    </div>
+                    <button class="detail-btn">Lihat Detail Materi <i class="fas fa-chevron-down"></i></button>
+                    <div class="class-material">
+                        <h4>Materi yang Dipelajari:</h4>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Basic cookie dough untuk berbagai kesempatan</li>
+                            <li><i class="fas fa-check"></i> Teknik dekorasi untuk tema Natal</li>
+                            <li><i class="fas fa-check"></i> Cookie pops dan 3D cookie ornaments</li>
+                            <li><i class="fas fa-check"></i> Stained glass cookies</li>
+                            <li><i class="fas fa-check"></i> Chinese New Year fortune cookies</li>
+                            <li><i class="fas fa-check"></i> Idul Fitri themed cookies</li>
+                            <li><i class="fas fa-check"></i> Valentine cookies dengan edible printing</li>
+                            <li><i class="fas fa-check"></i> Easter cookie designs</li>
+                            <li><i class="fas fa-check"></i> Packaging ideas dan gift presentations</li>
+                        </ul>
+                    </div>
+                    <div class="class-price">
+                        <span class="price">Rp 800.000</span>
+                        <div class="buy-buttons">
+                            <button class="buy-button" data-animate="pulse">Beli Sekarang</button>
+                            <button class="add-to-cart-button" 
+                                data-id="class8" 
+                                data-name="Holiday Cookie Collection" 
+                                data-price="800000" 
+                                data-image="./assets/kelas.png">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Class 9 -->
+            <div class="class-card" data-category="cake" data-animate="flipIn" data-delay="0.9">
+                <div class="class-image">
+                    <img src="./assets/kelas.png" alt="Wedding Cake Design">
+                    <div class="class-level advanced">Advanced</div>
+                </div>
+                <div class="class-details">
+                    <h3>Wedding Cake Design</h3>
+                    <p>Pelajari perancangan dan pembuatan kue pernikahan mewah</p>
+                    <div class="class-meta">
+                        <span><i class="far fa-clock"></i> 16 jam</span>
+                        <span><i class="far fa-calendar"></i> 8 minggu</span>
+                        <span><i class="far fa-file-video"></i> 48 video</span>
+                    </div>
+                    <button class="detail-btn">Lihat Detail Materi <i class="fas fa-chevron-down"></i></button>
+                    <div class="class-material">
+                        <h4>Materi yang Dipelajari:</h4>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Konsultasi dengan klien dan perencanaan desain</li>
+                            <li><i class="fas fa-check"></i> Cake recipes for large tier cakes</li>
+                            <li><i class="fas fa-check"></i> Structural support dan internal doweling</li>
+                            <li><i class="fas fa-check"></i> Fondant covering techniques untuk hasil sempurna</li>
+                            <li><i class="fas fa-check"></i> Sugar flowers: roses, peonies, orchids</li>
+                            <li><i class="fas fa-check"></i> Royal icing piping dan lace work</li>
+                            <li><i class="fas fa-check"></i> Hand painting on fondant</li>
+                            <li><i class="fas fa-check"></i> Gold leaf application dan metallic details</li>
+                            <li><i class="fas fa-check"></i> Stacking dan assembling multi-tier cakes</li>
+                            <li><i class="fas fa-check"></i> Transportation dan setup di venue</li>
+                            <li><i class="fas fa-check"></i> Business aspects: pricing, contracts, delivery</li>
+                        </ul>
+                    </div>
+                    <div class="class-price">
+                        <span class="price">Rp 1.500.000</span>
+                        <div class="buy-buttons">
+                            <button class="buy-button" data-animate="pulse">Beli Sekarang</button>
+                            <button class="add-to-cart-button" 
+                                data-id="class9" 
+                                data-name="Wedding Cake Design" 
+                                data-price="1500000" 
+                                data-image="./assets/kelas.png">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Class 10 -->
+            <div class="class-card" data-category="pastry" data-animate="flipIn" data-delay="1.0">
+                <div class="class-image">
+                    <img src="./assets/kelas.png" alt="Chocolate Artistry">
+                    <div class="class-level advanced">Advanced</div>
+                </div>
+                <div class="class-details">
+                    <h3>Chocolate Artistry</h3>
+                    <p>Teknik advanced dalam pembuatan praline dan seni cokelat</p>
+                    <div class="class-meta">
+                        <span><i class="far fa-clock"></i> 12 jam</span>
+                        <span><i class="far fa-calendar"></i> 6 minggu</span>
+                        <span><i class="far fa-file-video"></i> 36 video</span>
+                    </div>
+                    <button class="detail-btn">Lihat Detail Materi <i class="fas fa-chevron-down"></i></button>
+                    <div class="class-material">
+                        <h4>Materi yang Dipelajari:</h4>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Chocolate tempering methods: tabling, seeding, sous-vide</li>
+                            <li><i class="fas fa-check"></i> Creating chocolate shells dan molds</li>
+                            <li><i class="fas fa-check"></i> Ganache formulations dan flavor infusions</li>
+                            <li><i class="fas fa-check"></i> Praline fillings dan layering techniques</li>
+                            <li><i class="fas fa-check"></i> Transfer sheets dan cocoa butter coloring</li>
+                            <li><i class="fas fa-check"></i> Airbrush techniques untuk cokelat</li>
+                            <li><i class="fas fa-check"></i> Chocolate showpieces dan sculpting</li>
+                            <li><i class="fas fa-check"></i> Bon bon dengan mirror finish</li>
+                            <li><i class="fas fa-check"></i> Chocolate decoration pieces untuk kue dan dessert</li>
+                            <li><i class="fas fa-check"></i> Packaging dan storage untuk cokelat artisan</li>
+                        </ul>
+                    </div>
+                    <div class="class-price">
+                        <span class="price">Rp 1.250.000</span>
+                        <div class="buy-buttons">
+                            <button class="buy-button" data-animate="pulse">Beli Sekarang</button>
+                            <button class="add-to-cart-button" 
+                                data-id="class10" 
+                                data-name="Chocolate Artistry" 
+                                data-price="1250000" 
+                                data-image="./assets/kelas.png">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Class 11 -->
+
+            <div class="class-card" data-category="bread" data-animate="flipIn" data-delay="0.1">
+                <div class="class-image">
+                    <img src="./assets/kelas.png" alt="Nama Kelas Baru">
+                    <div class="class-level beginner">Beginner</div>
+                </div>
+                <div class="class-details">
+                    <h3>Nama Kelas Baru</h3>
+                    <p>Deskripsi singkat kelas baru</p>
+                    <div class="class-meta">
+                        <span><i class="far fa-clock"></i> 8 jam</span>
+                        <span><i class="far fa-calendar"></i> 4 minggu</span>
+                        <span><i class="far fa-file-video"></i> 24 video</span>
+                    </div>
+                    <button class="detail-btn">Lihat Detail Materi <i class="fas fa-chevron-down"></i></button>
+                    <div class="class-material">
+                        <h4>Materi yang Dipelajari:</h4>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Materi 1</li>
+                            <li><i class="fas fa-check"></i> Materi 2</li>
+                            <!-- Tambahkan materi lainnya -->
+                        </ul>
+                    </div>
+                    <div class="class-price">
+                        <span class="price">Rp 900.000</span>
+                        <div class="buy-buttons">
+                            <button class="buy-button" data-animate="pulse">Beli Sekarang</button>
+                            <button class="add-to-cart-button" 
+                                data-id="class11" 
+                                data-name="Nama Kelas Baru" 
+                                data-price="900000" 
+                                data-image="./assets/kelas.png">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section id="events" class="events">
+        <div class="section-header" data-animate="fadeIn">
+            <h2>Acara Mendatang</h2>
+            <div class="divider"></div>
+        </div>
+        <div class="events-container">
+            <!-- Event 1 -->
+            <div class="event-card" data-animate="slideLeft" data-delay="0.2">
+                <div class="event-image">
+                    <img src="./assets/kelas.png" alt="Workshop Roti Artisan">
+                    <div class="event-date">
+                        <span class="day">15</span>
+                        <span class="month">Mar</span>
+                    </div>
+                </div>
+                <div class="event-details">
+                    <h3>Demo Baking Online Class DBN 2026</h3>
+                    <p class="event-info"><i class="fas fa-map-marker-alt"></i> Padang, Sawahluto, Pariaman, Bukittinggi, </p>
+                    <p class="event-info"><i class="far fa-clock"></i> 09:00 - 15:00 WIB</p>
+                    <p class="event-description">Workshop spesial bersama Chef Nina untuk belajar teknik membuat roti artisan dengan metode tradisional. Peserta akan membawa pulang hasil baking dan sertifikat. Materi meliputi pembuatan sourdough, roti ciabatta, dan focaccia.</p>
+                    <a href="Pendaftaran.html"><button class="register-button" data-animate="pulse">Daftar Sekarang</button></a>
+                </div>
+            </div>
+            
+            <!-- Event 2 -->
+            
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials">
+        <div class="section-header" data-animate="fadeIn">
+            <h2>Testimonials</h2>
+            <div class="divider"></div>
+        </div>
+        <div class="testimonials-container">
+            <div class="testimonials-content" data-animate="fadeIn" data-delay="0.2">
+                <p>Dengarkan apa kata customer kami yang telah bergabung dengan kelas DBN Online Baking Class.</p>
+                <div class="testimonials-grid">
+                    <!-- Testimonial 1 -->
+                    <div class="testimonial-card" data-animate="zoomIn" data-delay="0.3">
+                        <div class="testimonial-image">
+                            <img src="./assets/kelas.png" alt="Diana Wijaya">
+                        </div>
+                        <h4>Diana Wijaya</h4>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"Kelas Basic Bread Making bersama Chef Nina mengubah cara saya memandang proses pembuatan roti. Penjelasannya detail dan mudah diikuti. Roti yang saya buat sekarang selalu mendapat pujian dari keluarga!"</p>
+                    </div>
+
+                    <!-- Testimonial 2 -->
+                    <div class="testimonial-card" data-animate="zoomIn" data-delay="0.4">
+                        <div class="testimonial-image">
+                            <img src="./assets/kelas.png" alt="Budi Santoso">
+                        </div>
+                        <h4>Budi Santoso</h4>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"Saya bergabung dengan kelas Sourdough Mastery dan hasilnya luar biasa! Chef Nina sangat sabar menjelaskan setiap detail proses. Support tim DBN juga sangat responsif ketika saya mengalami kesulitan."</p>
+                    </div>
+
+                    <!-- Testimonial 3 -->
+                    <div class="testimonial-card" data-animate="zoomIn" data-delay="0.5">
+                        <div class="testimonial-image">
+                            <img src="./assets/kelas.png" alt="Anita Kusuma">
+                        </div>
+                        <h4>Anita Kusuma</h4>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"Workshop Cake Decoration Masterclass membuka peluang bisnis baru untuk saya. Teknik-teknik yang diajarkan Chef Nina sangat applicable dan profesional. Sekarang saya sudah menerima pesanan kue!"</p>
+                    </div>
+
+                    <!-- Testimonial 4 -->
+                    <div class="testimonial-card" data-animate="zoomIn" data-delay="0.6">
+                        <div class="testimonial-image">
+                            <img src="./assets/kelas.png" alt="Rudi Hermawan">
+                        </div>
+                        <h4>Rudi Hermawan</h4>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"French Pastry Essentials adalah kelas yang sangat worth it! Chef Nina menjelaskan dengan detail dan memberikan tips yang tidak akan Anda temukan di kelas lain. Pastry saya sekarang selalu mendapat pujian!"</p>
+                    </div>
+
+                    <!-- Testimonial 5 -->
+                    <div class="testimonial-card" data-animate="zoomIn" data-delay="0.7">
+                        <div class="testimonial-image">
+                            <img src="./assets/kelas.png" alt="Fiona Gunawan">
+                        </div>
+                        <h4>Fiona Gunawan</h4>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"Saya mengikuti kelas Asian Pastry Fusion dan sangat terkesan dengan kreativitas Chef Nina dalam menggabungkan teknik klasik dengan rasa Asia. Materi yang disampaikan juga sangat terstruktur dan mudah diikuti."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="section-header" data-animate="fadeIn">
+            <h2>Contact Us</h2>
+            <div class="divider"></div>
+        </div>
+        <div class="contact-container">
+            <div class="contact-info" data-animate="slideLeft">
+                <h3>Hubungi Kami</h3>
+                <p>Punya pertanyaan tentang kelas kami? Jangan ragu untuk menghubungi tim DBN!</p>
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <p>Jl. Pastry No. 123, Jakarta Selatan</p>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-phone"></i>
+                    <p>+62 812-3456-7890</p>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <p>info@dbnonlineclass.com</p>
+                </div>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+            <div class="contact-form" data-animate="slideRight">
+                <h3>Kirim Pesan</h3>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <input type="text" id="name" placeholder="Nama Lengkap" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="subject" placeholder="Subjek">
+                    </div>
+                    <div class="form-group">
+                        <textarea id="message" placeholder="Pesan" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn" data-animate="pulse">Kirim Pesan</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="assets/logodbnmain.png" alt="DBN Logo">
+                <p>Delicious Baking Nowadays</p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about-chef">About Chef Nina</a></li>
+                    <li><a href="#about-dbn">About DBN</a></li>
+                    <li><a href="#classes">Kelas Online</a></li>
+                    <li><a href="#events">Acara Terbaru</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-newsletter">
+                <h4>Subscribe Newsletter</h4>
+                <p>Dapatkan update dan promo menarik dari DBN</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Email Anda" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 DBN Online Baking Class. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Tunggu hingga DOM sepenuhnya dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inisialisasi animasi
+            initAnimations();
+            
+            // Mobile menu toggle
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navLinks.classList.toggle('open');
+            });
+            
+            // Tutup menu mobile saat mengklik link
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('open');
+                });
+            });
+            
+            // Filter kelas
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const classCards = document.querySelectorAll('.class-card');
+            
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Hapus kelas active dari semua tombol
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    // Tambahkan kelas active ke tombol yang diklik
+                    btn.classList.add('active');
+                    
+                    const filter = btn.getAttribute('data-filter');
+                    
+                    classCards.forEach(card => {
+                        if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                            card.style.display = 'block';
+                            // Trigger animasi
+                            setTimeout(() => {
+                                card.classList.add('animated');
+                            }, 100);
+                        } else {
+                            card.style.display = 'none';
+                            card.classList.remove('animated');
+                        }
+                    });
+                });
+            });
+            
+            // Tombol detail materi kelas
+            const detailBtns = document.querySelectorAll('.detail-btn');
+            
+            detailBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Toggle kelas active untuk tombol
+                    this.classList.toggle('active');
+                    
+                    // Temukan bagian materi (elemen setelah tombol)
+                    const materialSection = this.nextElementSibling;
+                    
+                    // Toggle tampilan bagian materi
+                    materialSection.classList.toggle('show');
+                    
+                    // Ubah ikon dan latar belakang tombol
+                    const icon = this.querySelector('i');
+                    if (this.classList.contains('active')) {
+                        icon.className = 'fas fa-chevron-up';
+                        this.style.backgroundColor = '#F2E8C6';
+                    } else {
+                        icon.className = 'fas fa-chevron-down';
+                        this.style.backgroundColor = 'transparent';
+                    }
+                });
+            });
+            
+            // Pengiriman form kontak
+            const contactForm = document.getElementById('contactForm');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Validasi sederhana
+                    const name = document.getElementById('name').value;
+                    const email = document.getElementById('email').value;
+                    const message = document.getElementById('message').value;
+                    
+                    if (name && email && message) {
+                        // Di sini Anda biasanya akan mengirim data form ke server
+                        alert('Pesan Anda telah dikirim! Terima kasih.');
+                        contactForm.reset();
+                    } else {
+                        alert('Mohon lengkapi semua field yang diperlukan.');
+                    }
+                });
+            }
+            
+            // Form newsletter
+            const newsletterForm = document.querySelector('.newsletter-form');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const email = newsletterForm.querySelector('input').value;
+                    
+                    if (email) {
+                        alert('Terima kasih telah berlangganan newsletter kami!');
+                        newsletterForm.reset();
+                    } else {
+                        alert('Mohon masukkan email Anda.');
+                    }
+                });
+            }
+            
+            // Tombol beli sekarang
+            const buyButtons = document.querySelectorAll('.buy-button');
+            buyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const classCard = this.closest('.class-card');
+                    const className = classCard.querySelector('h3').textContent;
+                    const price = classCard.querySelector('.price').textContent;
+                    
+                    // Tambahkan langsung ke keranjang dan buka overlay keranjang
+                    const addToCartBtn = classCard.querySelector('.add-to-cart-button');
+                    addToCart({
+                        id: addToCartBtn.getAttribute('data-id'),
+                        name: addToCartBtn.getAttribute('data-name'),
+                        price: parseInt(addToCartBtn.getAttribute('data-price')),
+                        image: addToCartBtn.getAttribute('data-image'),
+                        quantity: 1
+                    });
+                    
+                    openCartOverlay();
+                });
+            });
+            
+            // Tombol pendaftaran event
+            const registerButtons = document.querySelectorAll('.register-button');
+            registerButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const eventName = this.closest('.event-card').querySelector('h3').textContent;
+                    
+                    alert(`Anda akan mendaftar untuk event "${eventName}". Silakan lanjutkan ke halaman pendaftaran.`);
+                });
+            });
+            
+            // --------------- SHOPPING CART FUNCTIONALITY ---------------
+            
+            // Cart State
+            let cart = [];
+            
+            // DOM Elements
+            const cartIcon = document.getElementById('cartIcon');
+            const cartOverlay = document.getElementById('cartOverlay');
+            const closeCart = document.getElementById('closeCart');
+            const cartItems = document.getElementById('cartItems');
+            const cartCount = document.querySelector('.cart-count');
+            const cartSubtotal = document.getElementById('cartSubtotal');
+            const cartTotal = document.getElementById('cartTotal');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            
+            // Customer Form Elements
+            const customerName = document.getElementById('customerName');
+            const customerPhone = document.getElementById('customerPhone');
+            const customerEmail = document.getElementById('customerEmail');
+            const checkoutForm = document.getElementById('checkoutForm');
+            
+            // Initialize Cart from Local Storage
+            function initCart() {
+                const savedCart = localStorage.getItem('dbnCart');
+                if (savedCart) {
+                    cart = JSON.parse(savedCart);
+                    updateCartIcon();
+                    renderCart();
+                }
+            }
+            
+            // Save Cart to Local Storage
+            function saveCart() {
+                localStorage.setItem('dbnCart', JSON.stringify(cart));
+            }
+            
+            // Add to Cart
+            function addToCart(item) {
+                // Check if item already exists
+                const existingItem = cart.find(cartItem => cartItem.id === item.id);
+                
+                if (existingItem) {
+                    existingItem.quantity += item.quantity;
+                } else {
+                    cart.push(item);
+                }
+                
+                saveCart();
+                updateCartIcon();
+                renderCart();
+                
+                // Show notification
+                showAddedToCartNotification(item.name);
+            }
+            
+            // Show Added to Cart Notification
+            function showAddedToCartNotification(productName) {
+                const notification = document.createElement('div');
+                notification.classList.add('cart-notification');
+                notification.innerHTML = `
+                    <p><i class="fas fa-check-circle"></i> ${productName} telah ditambahkan ke keranjang.</p>
+                `;
+                document.body.appendChild(notification);
+                
+                // Style the notification
+                Object.assign(notification.style, {
+                    position: 'fixed',
+                    bottom: '20px',
+                    right: '20px',
+                    backgroundColor: 'var(--dark-red)',
+                    color: 'white',
+                    padding: '15px 20px',
+                    borderRadius: '5px',
+                    boxShadow: '0 3px 10px rgba(0, 0, 0, 0.2)',
+                    zIndex: '1002',
+                    opacity: '0',
+                    transition: 'opacity 0.3s ease'
+                });
+                
+                // Animation
+                setTimeout(() => {
+                    notification.style.opacity = '1';
+                }, 10);
+                
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 300);
+                }, 3000);
+            }
+            
+            // Remove from Cart
+            function removeFromCart(itemId) {
+                cart = cart.filter(item => item.id !== itemId);
+                saveCart();
+                updateCartIcon();
+                renderCart();
+            }
+            
+            // Update Item Quantity
+            function updateItemQuantity(itemId, newQuantity) {
+                const item = cart.find(item => item.id === itemId);
+                
+                if (item) {
+                    if (newQuantity <= 0) {
+                        removeFromCart(itemId);
+                    } else {
+                        item.quantity = newQuantity;
+                        saveCart();
+                        renderCart();
+                    }
+                }
+            }
+            
+            // Calculate Total
+            function calculateTotal() {
+                return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+            }
+            
+            // Format Price
+            function formatPrice(price) {
+                return 'Rp ' + price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            }
+            
+            // Update Cart Icon
+            function updateCartIcon() {
+                const itemCount = cart.reduce((count, item) => count + item.quantity, 0);
+                cartCount.textContent = itemCount;
+                
+                if (itemCount > 0) {
+                    cartCount.style.display = 'flex';
+                } else {
+                    cartCount.style.display = 'none';
+                }
+            }
+            
+            // Render Cart
+            function renderCart() {
+                if (cart.length === 0) {
+                    cartItems.innerHTML = '<div class="empty-cart-message">Keranjang belanja Anda masih kosong.</div>';
+                    cartSubtotal.textContent = formatPrice(0);
+                    cartTotal.textContent = formatPrice(0);
+                    checkoutBtn.disabled = true;
+                    return;
+                }
+                
+                cartItems.innerHTML = '';
+                let cartHTML = '';
+                
+                cart.forEach(item => {
+                    cartHTML += `
+                        <div class="cart-item" data-id="${item.id}">
+                            <div class="cart-item-image">
+                                <img src="${item.image}" alt="${item.name}">
+                            </div>
+                            <div class="cart-item-details">
+                                <h4 class="cart-item-title">${item.name}</h4>
+                                <div class="cart-item-price">${formatPrice(item.price)}</div>
+                                <div class="cart-item-quantity">
+                                    <button class="quantity-btn decrease-btn">-</button>
+                                    <span>${item.quantity}</span>
+                                    <button class="quantity-btn increase-btn">+</button>
+                                    <button class="cart-item-remove"><i class="fas fa-trash-alt"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                cartItems.innerHTML = cartHTML;
+                
+                // Add Event Listeners for Quantity Buttons
+                cartItems.querySelectorAll('.decrease-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const itemId = this.closest('.cart-item').getAttribute('data-id');
+                        const item = cart.find(item => item.id === itemId);
+                        if (item) {
+                            updateItemQuantity(itemId, item.quantity - 1);
+                        }
+                    });
+                });
+                
+                cartItems.querySelectorAll('.increase-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const itemId = this.closest('.cart-item').getAttribute('data-id');
+                        const item = cart.find(item => item.id === itemId);
+                        if (item) {
+                            updateItemQuantity(itemId, item.quantity + 1);
+                        }
+                    });
+                });
+                
+                cartItems.querySelectorAll('.cart-item-remove').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const itemId = this.closest('.cart-item').getAttribute('data-id');
+                        removeFromCart(itemId);
+                    });
+                });
+                
+                // Update Cart Totals
+                const total = calculateTotal();
+                cartSubtotal.textContent = formatPrice(total);
+                cartTotal.textContent = formatPrice(total);
+                
+                // Enable/Disable Checkout Button
+                checkoutBtn.disabled = (cart.length === 0);
+                
+                // Validate Form and Update Checkout Button State
+                validateCheckoutForm();
+            }
+            
+            // Open Cart Overlay
+            function openCartOverlay() {
+                cartOverlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                
+                // Add a small delay before applying the transition
+                setTimeout(() => {
+                    cartOverlay.style.opacity = '1';
+                }, 10);
+            }
+            
+            // Close Cart Overlay
+            function closeCartOverlay() {
+                cartOverlay.style.opacity = '0';
+                
+                setTimeout(() => {
+                    cartOverlay.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }, 300);
+            }
+            
+            // Validate Checkout Form
+            function validateCheckoutForm() {
+                const formValid = 
+                    customerName.value.trim() !== '' && 
+                    customerPhone.value.trim() !== '' && 
+                    customerEmail.value.trim() !== '' && 
+                    validateEmail(customerEmail.value.trim()) &&
+                    cart.length > 0;
+                
+                checkoutBtn.disabled = !formValid;
+                
+                return formValid;
+            }
+            
+            // Validate Email
+            function validateEmail(email) {
+                const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(String(email).toLowerCase());
+            }
+            
+            // Generate WhatsApp Message for Checkout
+            function generateWhatsAppMessage() {
+                const name = customerName.value.trim();
+                const phone = customerPhone.value.trim();
+                const email = customerEmail.value.trim();
+                const total = calculateTotal();
+                
+                let message = `*Pesanan Kelas DBN Online*%0A%0A`;
+                message += `*Detail Pelanggan:*%0A`;
+                message += `Nama: ${name}%0A`;
+                message += `Telepon: ${phone}%0A`;
+                message += `Email: ${email}%0A%0A`;
+                
+                message += `*Detail Pesanan:*%0A`;
+                
+                cart.forEach((item, index) => {
+                    message += `${index + 1}. ${item.name} - ${formatPrice(item.price)} x ${item.quantity} = ${formatPrice(item.price * item.quantity)}%0A`;
+                });
+                
+                message += `%0A*Total Pembayaran: ${formatPrice(total)}*%0A%0A`;
+                message += `Terima kasih telah berbelanja di DBN Online Baking Class!`;
+                
+                return message;
+            }
+            
+            // Checkout Function
+            function processCheckout() {
+                if (!validateCheckoutForm()) {
+                    // Show validation errors
+                    if (customerName.value.trim() === '') {
+                        highlightFormError(customerName, true);
+                    } else {
+                        highlightFormError(customerName, false);
+                    }
+                    
+                    if (customerPhone.value.trim() === '') {
+                        highlightFormError(customerPhone, true);
+                    } else {
+                        highlightFormError(customerPhone, false);
+                    }
+                    
+                    if (customerEmail.value.trim() === '' || !validateEmail(customerEmail.value.trim())) {
+                        highlightFormError(customerEmail, true);
+                    } else {
+                        highlightFormError(customerEmail, false);
+                    }
+                    
+                    return;
+                }
+                
+                // Generate WhatsApp URL
+                const message = generateWhatsAppMessage();
+                const whatsappURL = `https://wa.me/6288213771211?text=${message}`;
+                
+                // Open WhatsApp in new window
+                window.open(whatsappURL, '_blank');
+                
+                // Clear cart
+                cart = [];
+                saveCart();
+                updateCartIcon();
+                renderCart();
+                
+                // Reset form
+                checkoutForm.reset();
+                
+                // Close cart overlay
+                closeCartOverlay();
+                
+                // Show success message
+                alert('Pesanan Anda telah diteruskan ke WhatsApp. Terima kasih telah berbelanja di DBN Online Baking Class!');
+            }
+            
+            // Highlight Form Errors
+            function highlightFormError(inputElement, isError) {
+                const formGroup = inputElement.closest('.form-group');
+                
+                if (isError) {
+                    formGroup.classList.add('error');
+                } else {
+                    formGroup.classList.remove('error');
+                }
+            }
+            
+            // Event Listeners for Cart
+            
+            // Add to Cart Buttons
+            document.querySelectorAll('.add-to-cart-button').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const item = {
+                        id: this.getAttribute('data-id'),
+                        name: this.getAttribute('data-name'),
+                        price: parseInt(this.getAttribute('data-price')),
+                        image: this.getAttribute('data-image'),
+                        quantity: 1
+                    };
+                    
+                    addToCart(item);
+                });
+            });
+            
+            // Cart Icon Click
+            cartIcon.addEventListener('click', openCartOverlay);
+            
+            // Close Cart Button
+            closeCart.addEventListener('click', closeCartOverlay);
+            
+            // Close Cart when clicking outside
+            cartOverlay.addEventListener('click', function(e) {
+                if (e.target === cartOverlay) {
+                    closeCartOverlay();
+                }
+            });
+            
+            // Checkout Button
+            checkoutBtn.addEventListener('click', processCheckout);
+            
+            // Form Input Event Listeners
+            customerName.addEventListener('input', function() {
+                highlightFormError(this, this.value.trim() === '');
+                validateCheckoutForm();
+            });
+            
+            customerPhone.addEventListener('input', function() {
+                highlightFormError(this, this.value.trim() === '');
+                validateCheckoutForm();
+            });
+            
+            customerEmail.addEventListener('input', function() {
+                highlightFormError(this, this.value.trim() === '' || !validateEmail(this.value.trim()));
+                validateCheckoutForm();
+            });
+            
+            // Initialize Cart
+            initCart();
+        });
+        
+        // Menangani animasi
+        function initAnimations() {
+            const animatedElements = document.querySelectorAll('[data-animate]');
+            
+            // Pengecekan awal untuk elemen dalam viewport
+            checkAnimations();
+            
+            // Cek animasi saat scroll
+            window.addEventListener('scroll', checkAnimations);
+            
+            function checkAnimations() {
+                animatedElements.forEach(el => {
+                    if (isElementInViewport(el) && !el.classList.contains('animated')) {
+                        // Tambahkan delay jika ditentukan
+                        const delay = el.getAttribute('data-delay') || 0;
+                        
+                        setTimeout(() => {
+                            el.classList.add('animated');
+                            
+                            // Animasi khusus untuk elemen pulse
+                            if (el.getAttribute('data-animate') === 'pulse') {
+                                el.classList.add('pulse-animation');
+                            }
+                        }, delay * 1000);
+                    }
+                });
+            }
+            
+            function isElementInViewport(el) {
+                const rect = el.getBoundingClientRect();
+                return (
+                    rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.85 &&
+                    rect.bottom >= 0
+                );
+            }
+        }
+        
+        // Inisialisasi animasi ReactBits
+        class ReactBitsAnimations {
+            constructor() {
+                this.initializeElements();
+            }
+            
+            initializeElements() {
+                const elements = document.querySelectorAll('[data-animate]');
+                elements.forEach(element => {
+                    const animationType = element.getAttribute('data-animate');
+                    const delay = element.getAttribute('data-delay') || 0;
+                    
+                    // Terapkan gaya awal
+                    element.style.opacity = '0';
+                    element.style.transition = `all 0.8s ease ${delay}s`;
+                    
+                    // Siapkan intersection observer
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                // Elemen terlihat, terapkan animasi
+                                this.animateElement(element, animationType);
+                                observer.unobserve(element);
+                            }
+                        });
+                    }, { threshold: 0.1 });
+                    
+                    observer.observe(element);
+                });
+            }
+            
+            animateElement(element, type) {
+                element.style.opacity = '1';
+                
+                switch (type) {
+                    case 'fadeIn':
+                        element.style.transform = 'translateY(0)';
+                        break;
+                    case 'slideDown':
+                        element.style.transform = 'translateY(0)';
+                        break;
+                    case 'slideUp':
+                        element.style.transform = 'translateY(0)';
+                        break;
+                    case 'slideLeft':
+                        element.style.transform = 'translateX(0)';
+                        break;
+                    case 'slideRight':
+                        element.style.transform = 'translateX(0)';
+                        break;
+                    case 'zoomIn':
+                        element.style.transform = 'scale(1)';
+                        break;
+                    case 'flipIn':
+                        element.style.transform = 'perspective(400px) rotateY(0)';
+                        break;
+                    case 'pulse':
+                        setInterval(() => {
+                            element.style.transform = 'scale(1.05)';
+                            setTimeout(() => {
+                                element.style.transform = 'scale(1)';
+                            }, 300);
+                        }, 2000);
+                        break;
+                }
+            }
+        }
+        
+        // Inisialisasi ReactBits
+        window.addEventListener('load', () => {
+            new ReactBitsAnimations();
+        });
+    </script>
